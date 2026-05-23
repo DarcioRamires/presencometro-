@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>CM Hortência - Presençômetro</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Segoe UI',sans-serif;
+    background:#e9e9e9;
+    overflow:hidden;
+}
+
+/* ================= HEADER ================= */
+
+header{
+    height:90px;
+    background:#ffffff;
+    border-bottom:5px solid #0d6efd;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 25px;
+}
+
+header h1{
+    color:#0d6efd;
+    font-size:30px;
+    font-weight:900;
+}
+
+.logo{
+    font-weight:bold;
+    color:#666;
+}
+
+/* ================= CONTAINER ================= */
+
+#dashboard{
+    width:100%;
+    height:calc(100vh - 90px);
+    padding:20px;
+}
+
+/* ================= QUADRO ================= */
+
+.presencometro{
+
+    width:100%;
+    height:100%;
+    background:#13b8f6;
+    border:12px solid #d4af37;
+    border-radius:25px;
+    padding:25px;
+    overflow:auto;
+}
+
+.titulo{
+
+    text-align:center;
+    font-size:42px;
+    font-weight:900;
+    color:#111;
+    margin-bottom:25px;
+    letter-spacing:2px;
+    text-shadow:2px 2px #fff;
+}
+
+/* ================= TOPO ================= */
+
+.topo-info{
+
+    display:flex;
+    justify-content:center;
+    gap:25px;
+    margin-bottom:25px;
+    flex-wrap:wrap;
+}
+
+.info-box{
+
+    background:#fff;
+    padding:12px 20px;
+    border-radius:12px;
+    font-size:20px;
+    font-weight:bold;
+    box-shadow:0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* ================= COLUNAS ================= */
+
+.colunas{
+
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:20px;
+    flex-wrap:nowrap;
+}
+
+/* ================= TURNOS ================= */
+
+.turno{
+
+    width:50%;
+    background:rgba(255,255,255,0.15);
+    border-radius:20px;
+    padding:20px;
+}
+
+.turno h2{
+
+    text-align:center;
+    color:#fff;
+    margin-bottom:20px;
+    font-size:32px;
+    font-weight:900;
+}
+
+/* ================= TABELA ================= */
+
+.freq-table{
+
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0 10px;
+}
+
+.freq-table th{
+
+    background:#0d6efd;
+    color:white;
+    padding:12px;
+    font-size:18px;
+    border-radius:10px;
+}
+
+.freq-table td{
+
+    background:white;
+    padding:12px;
+    text-align:center;
+    font-size:20px;
+    border-radius:10px;
+    font-weight:bold;
+}
+
+.presente{
+    color:#198754;
+}
+
+.ausente{
+    color:#dc3545;
+}
+
+/* ================= TOTAL ================= */
+
+.total-box{
+
+    background:white;
+    margin-top:20px;
+    padding:15px;
+    border-radius:15px;
+    text-align:center;
+    font-size:22px;
+    font-weight:bold;
+}
+
+/* ================= BOTÃO ADMIN ================= */
+
+.admin-btn{
+
+    position:fixed;
+    right:20px;
+    bottom:20px;
+
+    background:#0d6efd;
+    color:white;
+    border:none;
+
+    padding:15px 25px;
+    border-radius:15px;
+
+    font-size:18px;
+    font-weight:bold;
+
+    cursor:pointer;
+
+    box-shadow:0 5px 15px rgba(0,0,0,0.3);
+
+    z-index:999;
+}
+
+/* ================= MODAL ================= */
+
+.modal{
+
+    position:fixed;
+    inset:0;
+
+    background:rgba(0,0,0,0.7);
+
+    display:none;
+    justify-content:center;
+    align-items:center;
+
+    z-index:9999;
+}
+
+.modal-content{
+
+    width:95%;
+    max-width:1200px;
+    max-height:90vh;
+
+    overflow:auto;
+
+    background:white;
+    border-radius:20px;
+
+    padding:30px;
+}
+
+.modal h2{
+
+    color:#0d6efd;
+    margin-bottom:20px;
+}
+
+/* ================= LOGIN ================= */
+
+.login-box{
+
+    max-width:400px;
+}
+
+/* ================= INPUTS ================= */
+
+input{
+
+    width:100%;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #ccc;
+    margin-bottom:15px;
+    font-size:16px;
+}
+
+/* ================= GRID ADMIN ================= */
+
+.admin-grid{
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:20px;
+}
+
+.sala-card{
+
+    background:#f5f5f5;
+    border:2px solid #ddd;
+    border-radius:15px;
+    padding:15px;
+}
+
+.sala-card h3{
+
+    color:#0d6efd;
+    margin-bottom:15px;
+}
+
+/* ================= BOTÕES ================= */
+
+.save-btn{
+
+    background:#198754;
+    color:white;
+
+    border:none;
+
+    padding:15px 25px;
+
+    border-radius:12px;
+
+    font-size:18px;
+    font-weight:bold;
+
+    cursor:pointer;
+}
+
+.close-btn{
+
+    background:#dc3545;
+    color:white;
+
+    border:none;
+
+    padding:15px 25px;
+
+    border-radius:12px;
+
+    font-size:18px;
+    font-weight:bold;
+
+    cursor:pointer;
+
+    margin-left:10px;
+}
+
+/* ================= RESPONSIVO ================= */
+
+@media(max-width:1000px){
+
+    body{
+        overflow:auto;
+    }
+
+    .colunas{
+        flex-direction:column;
+    }
+
+    .turno{
+        width:100%;
+    }
+
+    .titulo{
+        font-size:30px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        LOGO EDUCAÇÃO
+    </div>
+
+    <h1>
+        CM Hortência Alves dos Santos
+    </h1>
+
+    <div class="logo">
+        CIDADE EDUCADORA
+    </div>
+
+</header>
+
+<div id="dashboard">
+
+    <div class="presencometro">
+
+        <div class="titulo">
+            CM HORTÊNCIA PRESENÇÔMETRO
+        </div>
+
+        <div class="topo-info">
+
+            <div class="info-box">
+                📅 Data:
+                <span id="dataAtual"></span>
+            </div>
+
+            <div class="info-box">
+                📖 Mês:
+                <span id="mesAtual"></span>
+            </div>
+
+        </div>
+
+        <div class="colunas">
+
+            <!-- MANHÃ -->
+
+            <div class="turno">
+
+                <h2>☀️ MANHÃ</h2>
+
+                <table class="freq-table">
+
+                    <thead>
+
+                        <tr>
+                            <th>Sala</th>
+                            <th>✅ Presentes</th>
+                            <th>❌ Ausentes</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="manhaBody"></tbody>
+
+                </table>
+
+                <div class="total-box">
+
+                    Total Presentes:
+                    <span id="manhaTotal"></span>
+
+                </div>
+
+            </div>
+
+            <!-- TARDE -->
+
+            <div class="turno">
+
+                <h2>🌤️ TARDE</h2>
+
+                <table class="freq-table">
+
+                    <thead>
+
+                        <tr>
+                            <th>Sala</th>
+                            <th>✅ Presentes</th>
+                            <th>❌ Ausentes</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="tardeBody"></tbody>
+
+                </table>
+
+                <div class="total-box">
+
+                    Total Presentes:
+                    <span id="tardeTotal"></span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- BOTÃO ADMIN -->
+
+<button class="admin-btn" onclick="abrirLogin()">
+
+    ⚙️ Admin
+
+</button>
+
+<!-- LOGIN -->
+
+<div class="modal" id="loginModal">
+
+    <div class="modal-content login-box">
+
+        <h2>Login Administrativo</h2>
+
+        <input type="text" id="usuario" placeholder="Usuário">
+
+        <input type="password" id="senha" placeholder="Senha">
+
+        <button class="save-btn" onclick="fazerLogin()">
+            Entrar
+        </button>
+
+    </div>
+
+</div>
+
+<!-- PAINEL ADMIN -->
+
+<div class="modal" id="adminModal">
+
+    <div class="modal-content">
+
+        <h2>Painel de Frequência</h2>
+
+        <div class="admin-grid" id="adminGrid"></div>
+
+        <br>
+
+        <button class="save-btn" onclick="salvarDados()">
+
+            💾 Salvar Alterações
+
+        </button>
+
+        <button class="close-btn" onclick="fecharAdmin()">
+
+            Fechar
+
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+/* ================= SALAS ================= */
+
+const salas = {
+
+    manha: [
+
+        "6º A",
+        "6º B",
+        "6º C",
+
+        "7º A",
+        "7º B",
+        "7º C",
+
+        "8º A",
+        "8º B",
+        "8º C",
+
+        "9º A",
+        "9º B"
+    ],
+
+    tarde: [
+
+        "1º A",
+        "1º B",
+
+        "2º A",
+        "2º B",
+
+        "3º A",
+        "3º B",
+
+        "4º A",
+        "4º B",
+
+        "5º A",
+        "5º B"
+    ]
+};
+
+/* ================= DADOS ================= */
+
+let dados = JSON.parse(localStorage.getItem("frequencia")) || gerarDados();
+
+/* ================= GERAR ESTRUTURA ================= */
+
+function gerarDados(){
+
+    let estrutura = {};
+
+    [...salas.manha, ...salas.tarde].forEach(sala => {
+
+        estrutura[sala] = {
+
+            presentes: 0,
+            ausentes: 0
+        };
+
+    });
+
+    return estrutura;
+}
+
+/* ================= RENDER ================= */
+
+function renderizar(){
+
+    let manhaHTML = "";
+    let tardeHTML = "";
+
+    let totalManha = 0;
+    let totalTarde = 0;
+
+    /* MANHÃ */
+
+    salas.manha.forEach(sala => {
+
+        totalManha += Number(dados[sala].presentes);
+
+        manhaHTML += `
+
+            <tr>
+
+                <td>${sala}</td>
+
+                <td class="presente">
+                    ${dados[sala].presentes}
+                </td>
+
+                <td class="ausente">
+                    ${dados[sala].ausentes}
+                </td>
+
+            </tr>
+        `;
+    });
+
+    /* TARDE */
+
+    salas.tarde.forEach(sala => {
+
+        totalTarde += Number(dados[sala].presentes);
+
+        tardeHTML += `
+
+            <tr>
+
+                <td>${sala}</td>
+
+                <td class="presente">
+                    ${dados[sala].presentes}
+                </td>
+
+                <td class="ausente">
+                    ${dados[sala].ausentes}
+                </td>
+
+            </tr>
+        `;
+    });
+
+    document.getElementById("manhaBody").innerHTML = manhaHTML;
+    document.getElementById("tardeBody").innerHTML = tardeHTML;
+
+    document.getElementById("manhaTotal").innerText = totalManha;
+    document.getElementById("tardeTotal").innerText = totalTarde;
+}
+
+/* ================= DATA ================= */
+
+function carregarData(){
+
+    const hoje = new Date();
+
+    document.getElementById("dataAtual").innerText =
+        hoje.toLocaleDateString("pt-BR");
+
+    document.getElementById("mesAtual").innerText =
+        hoje.toLocaleString("pt-BR", { month:"long" });
+}
+
+/* ================= LOGIN ================= */
+
+function abrirLogin(){
+
+    document.getElementById("loginModal").style.display = "flex";
+}
+
+function fazerLogin(){
+
+    const usuario =
+        document.getElementById("usuario").value;
+
+    const senha =
+        document.getElementById("senha").value;
+
+    if(usuario === "darcio" && senha === "08242979"){
+
+        document.getElementById("loginModal").style.display = "none";
+
+        abrirAdmin();
+
+    }else{
+
+        alert("Usuário ou senha incorretos.");
+
+    }
+}
+
+/* ================= ADMIN ================= */
+
+function abrirAdmin(){
+
+    let html = "";
+
+    [...salas.manha, ...salas.tarde].forEach(sala => {
+
+        html += `
+
+            <div class="sala-card">
+
+                <h3>${sala}</h3>
+
+                <label>Presentes</label>
+
+                <input
+                    type="number"
+                    id="p_${sala}"
+                    value="${dados[sala].presentes}"
+                >
+
+                <label>Ausentes</label>
+
+                <input
+                    type="number"
+                    id="a_${sala}"
+                    value="${dados[sala].ausentes}"
+                >
+
+            </div>
+        `;
+    });
+
+    document.getElementById("adminGrid").innerHTML = html;
+
+    document.getElementById("adminModal").style.display = "flex";
+}
+
+function fecharAdmin(){
+
+    document.getElementById("adminModal").style.display = "none";
+}
+
+/* ================= SALVAR ================= */
+
+function salvarDados(){
+
+    [...salas.manha, ...salas.tarde].forEach(sala => {
+
+        dados[sala] = {
+
+            presentes:Number(
+                document.getElementById(`p_${sala}`).value
+            ),
+
+            ausentes:Number(
+                document.getElementById(`a_${sala}`).value
+            )
+        };
+    });
+
+    localStorage.setItem(
+        "frequencia",
+        JSON.stringify(dados)
+    );
+
+    renderizar();
+
+    fecharAdmin();
+
+    alert("Frequência atualizada com sucesso!");
+}
+
+/* ================= INICIAR ================= */
+
+carregarData();
+
+renderizar();
+
+</script>
+
+</body>
+</html>
